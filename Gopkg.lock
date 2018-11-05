@@ -11,14 +11,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:107b233e45174dbab5b1324201d092ea9448e58243ab9f039e4c0f332e121e3a"
-  name = "github.com/golang/glog"
-  packages = ["."]
-  pruneopts = ""
-  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
-  branch = "master"
   digest = "1:a92cc66c45dd3eea591d957934e2615be0fcf5b59bb15cbe49e3a1784ff01c40"
   name = "github.com/kolo/xmlrpc"
   packages = ["."]
@@ -38,9 +30,8 @@
   analyzer-version = 1
   input-imports = [
     "github.com/fatih/structs",
-    "github.com/golang/glog",
     "github.com/kolo/xmlrpc",
-    "github.com/mitchellh/mapstructure"
+    "github.com/mitchellh/mapstructure",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
