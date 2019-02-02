@@ -29,23 +29,11 @@ const (
 	methodDomainWhois       = "domain.whois"
 )
 
-type DomainService interface {
-	Check(domains []string) ([]DomainCheckResponse, error)
-	Register(request *DomainRegisterRequest) (*DomainRegisterResponse, error)
-	Delete(domain string, scheduledDate time.Time) error
-	Info(domain string, roId int) (*DomainInfoResponse, error)
-	GetPrices(tlds []string) ([]DomainPriceResponse, error)
-	List(*DomainListRequest) (*DomainList, error)
-	Whois(domain string) (string, error)
-}
+// DomainService API access to Domain.
+type DomainService service
 
-var _ DomainService = &DomainServiceOp{}
-
-type DomainServiceOp struct {
-	client *Client
-}
-
-func (s *DomainServiceOp) Check(domains []string) ([]DomainCheckResponse, error) {
+// Check Checks domains.
+func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
 	req := s.client.NewRequest(methodDomainCheck, map[string]interface{}{
 		"domain": domains,
 		"wide":   "2",
@@ -65,7 +53,8 @@ func (s *DomainServiceOp) Check(domains []string) ([]DomainCheckResponse, error)
 	return root.Domains, nil
 }
 
-func (s *DomainServiceOp) GetPrices(tlds []string) ([]DomainPriceResponse, error) {
+// GetPrices Gets TLDS prices.
+func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) {
 	req := s.client.NewRequest(methodDomainGetPrices, map[string]interface{}{
 		"tld": tlds,
 		"vat": false,
@@ -85,7 +74,8 @@ func (s *DomainServiceOp) GetPrices(tlds []string) ([]DomainPriceResponse, error
 	return root.Prices, nil
 }
 
-func (s *DomainServiceOp) Register(request *DomainRegisterRequest) (*DomainRegisterResponse, error) {
+// Register Register a domain.
+func (s *DomainService) Register(request *DomainRegisterRequest) (*DomainRegisterResponse, error) {
 	req := s.client.NewRequest(methodDomainCreate, structs.Map(request))
 
 	resp, err := s.client.Do(*req)
@@ -102,7 +92,8 @@ func (s *DomainServiceOp) Register(request *DomainRegisterRequest) (*DomainRegis
 	return &result, nil
 }
 
-func (s *DomainServiceOp) Delete(domain string, scheduledDate time.Time) error {
+// Delete Deletes a domain.
+func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
 	req := s.client.NewRequest(methodDomainDelete, map[string]interface{}{
 		"domain": domain,
 		"scDate": scheduledDate.Format(time.RFC3339),
@@ -112,13 +103,14 @@ func (s *DomainServiceOp) Delete(domain string, scheduledDate time.Time) error {
 	return err
 }
 
-func (s *DomainServiceOp) Info(domain string, roId int) (*DomainInfoResponse, error) {
+// Info Gets information about a domain.
+func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, error) {
 	req := s.client.NewRequest(methodDomainInfo, map[string]interface{}{
 		"domain": domain,
 		"wide":   "2",
 	})
-	if roId != 0 {
-		req.Args["roId"] = roId
+	if roID != 0 {
+		req.Args["roId"] = roID
 	}
 
 	resp, err := s.client.Do(*req)
@@ -136,9 +128,10 @@ func (s *DomainServiceOp) Info(domain string, roId int) (*DomainInfoResponse, er
 	return &result, nil
 }
 
-func (s *DomainServiceOp) List(request *DomainListRequest) (*DomainList, error) {
+// List List domains.
+func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 	if request == nil {
-		return nil, errors.New("Request can't be nil")
+		return nil, errors.New("request can't be nil")
 	}
 	requestMap := structs.Map(request)
 	requestMap["wide"] = "2"
@@ -159,7 +152,8 @@ func (s *DomainServiceOp) List(request *DomainListRequest) (*DomainList, error) 
 	return &result, nil
 }
 
-func (s *DomainServiceOp) Whois(domain string) (string, error) {
+// Whois Whois about a domains.
+func (s *DomainService) Whois(domain string) (string, error) {
 	req := s.client.NewRequest(methodDomainWhois, map[string]interface{}{
 		"domain": domain,
 	})
@@ -182,6 +176,7 @@ type domainCheckResponseRoot struct {
 	Domains []DomainCheckResponse `mapstructure:"domain"`
 }
 
+// DomainCheckResponse API model.
 type DomainCheckResponse struct {
 	Available   int     `mapstructure:"avail"`
 	Status      string  `mapstructure:"status"`
@@ -197,6 +192,7 @@ type domainPriceResponseRoot struct {
 	Prices []DomainPriceResponse `mapstructure:"price"`
 }
 
+// DomainPriceResponse API model.
 type DomainPriceResponse struct {
 	Tld                 string  `mapstructure:"tld"`
 	Currency            string  `mapstructure:"currency"`
@@ -215,6 +211,7 @@ type DomainPriceResponse struct {
 	TradePeriod         int     `mapstructure:"tradePeriod"`
 }
 
+// DomainRegisterRequest API model.
 type DomainRegisterRequest struct {
 	Domain        string   `structs:"domain"`
 	Period        string   `structs:"period,omitempty"`
@@ -226,7 +223,7 @@ type DomainRegisterRequest struct {
 	TransferLock  string   `structs:"transferLock,omitempty"`
 	RenewalMode   string   `structs:"renewalMode,omitempty"`
 	WhoisProvider string   `structs:"whoisProvider,omitempty"`
-	WhoisUrl      string   `structs:"whoisUrl,omitempty"`
+	WhoisURL      string   `structs:"whoisUrl,omitempty"`
 	ScDate        string   `structs:"scDate,omitempty"`
 	ExtDate       string   `structs:"extDate,omitempty"`
 	Asynchron     string   `structs:"asynchron,omitempty"`
@@ -234,14 +231,16 @@ type DomainRegisterRequest struct {
 	Testing       string   `structs:"testing,omitempty"`
 }
 
+// DomainRegisterResponse API model.
 type DomainRegisterResponse struct {
-	RoId     int
-	Price    float32
-	Currency string
+	RoID     int     `mapstructure:"roId"`
+	Price    float32 `mapstructure:"price"`
+	Currency string  `mapstructure:"currency"`
 }
 
+// DomainInfoResponse API model.
 type DomainInfoResponse struct {
-	RoId         int                `mapstructure:"roId"`
+	RoID         int                `mapstructure:"roId"`
 	Domain       string             `mapstructure:"domain"`
 	DomainAce    string             `mapstructure:"domainAce"`
 	Period       string             `mapstructure:"period"`
@@ -264,27 +263,29 @@ type DomainInfoResponse struct {
 	Contacts     map[string]Contact `mapstructure:"contact"`
 }
 
+// Contact API model.
 type Contact struct {
-	RoId          int
-	Id            string
-	Type          string
-	Name          string
-	Org           string
-	Street        string
-	City          string
+	RoID          int    `mapstructure:"roId"`
+	ID            string `mapstructure:"id"`
+	Type          string `mapstructure:"type"`
+	Name          string `mapstructure:"name"`
+	Org           string `mapstructure:"org"`
+	Street        string `mapstructure:"street"`
+	City          string `mapstructure:"city"`
 	PostalCode    string `mapstructure:"pc"`
 	StateProvince string `mapstructure:"sp"`
 	Country       string `mapstructure:"cc"`
 	Phone         string `mapstructure:"voice"`
-	Fax           string
-	Email         string
-	Remarks       string
-	Protection    string
+	Fax           string `mapstructure:"fax"`
+	Email         string `mapstructure:"email"`
+	Remarks       string `mapstructure:"remarks"`
+	Protection    string `mapstructure:"protection"`
 }
 
+// DomainListRequest API model.
 type DomainListRequest struct {
 	Domain       string `structs:"domain,omitempty"`
-	RoId         int    `structs:"roId,omitempty"`
+	RoID         int    `structs:"roId,omitempty"`
 	Status       int    `structs:"status,omitempty"`
 	Registrant   int    `structs:"registrant,omitempty"`
 	Admin        int    `structs:"admin,omitempty"`
@@ -296,9 +297,10 @@ type DomainListRequest struct {
 	Tag          int    `structs:"tag,omitempty"`
 	Order        int    `structs:"order,omitempty"`
 	Page         int    `structs:"page,omitempty"`
-	Pagelimit    int    `structs:"pagelimit,omitempty"`
+	PageLimit    int    `structs:"pagelimit,omitempty"`
 }
 
+// DomainList API model.
 type DomainList struct {
 	Count   int
 	Domains []DomainInfoResponse `mapstructure:"domain"`

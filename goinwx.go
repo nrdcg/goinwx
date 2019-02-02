@@ -6,9 +6,10 @@ import (
 	"github.com/kolo/xmlrpc"
 )
 
+// API information.
 const (
-	APIBaseUrl        = "https://api.domrobot.com/xmlrpc/"
-	APISandboxBaseUrl = "https://api.ote.domrobot.com/xmlrpc/"
+	APIBaseURL        = "https://api.domrobot.com/xmlrpc/"
+	APISandboxBaseURL = "https://api.ote.domrobot.com/xmlrpc/"
 	APILanguage       = "eng"
 )
 
@@ -20,26 +21,29 @@ type Client struct {
 	// Base URL for API requests.
 	BaseURL *url.URL
 
-	// API username
-	Username string
+	// API username and password
+	username string
+	password string
 
-	// API password
-	Password string
-
-	// User agent for client
-	APILanguage string
+	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for communicating with the API
-	Account     AccountService
-	Domains     DomainService
-	Nameservers NameserverService
-	Contacts    ContactService
+	Account     *AccountService
+	Domains     *DomainService
+	Nameservers *NameserverService
+	Contacts    *ContactService
 }
 
+type service struct {
+	client *Client
+}
+
+// ClientOptions Options of the API client.
 type ClientOptions struct {
 	Sandbox bool
 }
 
+// Request The representation of an API request.
 type Request struct {
 	ServiceMethod string
 	Args          map[string]interface{}
@@ -55,23 +59,25 @@ func NewClient(username, password string, opts *ClientOptions) *Client {
 	var baseURL *url.URL
 
 	if useSandbox {
-		baseURL, _ = url.Parse(APISandboxBaseUrl)
+		baseURL, _ = url.Parse(APISandboxBaseURL)
 	} else {
-		baseURL, _ = url.Parse(APIBaseUrl)
+		baseURL, _ = url.Parse(APIBaseURL)
 	}
 
 	rpcClient, _ := xmlrpc.NewClient(baseURL.String(), nil)
 
-	client := &Client{RPCClient: rpcClient,
-		BaseURL:  baseURL,
-		Username: username,
-		Password: password,
+	client := &Client{
+		RPCClient: rpcClient,
+		BaseURL:   baseURL,
+		username:  username,
+		password:  password,
 	}
 
-	client.Account = &AccountServiceOp{client: client}
-	client.Domains = &DomainServiceOp{client: client}
-	client.Nameservers = &NameserverServiceOp{client: client}
-	client.Contacts = &ContactServiceOp{client: client}
+	client.common.client = client
+	client.Account = (*AccountService)(&client.common)
+	client.Domains = (*DomainService)(&client.common)
+	client.Nameservers = (*NameserverService)(&client.common)
+	client.Contacts = (*ContactService)(&client.common)
 
 	return client
 }
@@ -93,11 +99,11 @@ func (c *Client) Do(req Request) (*map[string]interface{}, error) {
 		return nil, err
 	}
 
-	return &resp.ResponseData, CheckResponse(&resp)
+	return &resp.ResponseData, checkResponse(&resp)
 }
 
-// CheckResponse checks the API response for errors, and returns them if present.
-func CheckResponse(r *Response) error {
+// checkResponse checks the API response for errors, and returns them if present.
+func checkResponse(r *Response) error {
 	if c := r.Code; c >= 1000 && c <= 1500 {
 		return nil
 	}

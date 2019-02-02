@@ -13,21 +13,11 @@ const (
 	methodContactUpdate = "contact.update"
 )
 
-type ContactService interface {
-	Create(*ContactCreateRequest) (int, error)
-	Update(*ContactUpdateRequest) error
-	Delete(int) error
-	Info(int) (*ContactInfoResponse, error)
-	List(string) (*ContactListResponse, error)
-}
+// ContactService API access to Contact.
+type ContactService service
 
-var _ ContactService = &ContactServiceOp{}
-
-type ContactServiceOp struct {
-	client *Client
-}
-
-func (s *ContactServiceOp) Create(request *ContactCreateRequest) (int, error) {
+// Create Creates a contact.
+func (s *ContactService) Create(request *ContactCreateRequest) (int, error) {
 	req := s.client.NewRequest(methodContactCreate, structs.Map(request))
 
 	resp, err := s.client.Do(*req)
@@ -44,28 +34,31 @@ func (s *ContactServiceOp) Create(request *ContactCreateRequest) (int, error) {
 	return result["id"], nil
 }
 
-func (s *ContactServiceOp) Delete(roId int) error {
+// Delete Deletes a contact.
+func (s *ContactService) Delete(roID int) error {
 	req := s.client.NewRequest(methodContactDelete, map[string]interface{}{
-		"id": roId,
+		"id": roID,
 	})
 
 	_, err := s.client.Do(*req)
 	return err
 }
 
-func (s *ContactServiceOp) Update(request *ContactUpdateRequest) error {
+// Update Updates a contact.
+func (s *ContactService) Update(request *ContactUpdateRequest) error {
 	req := s.client.NewRequest(methodContactUpdate, structs.Map(request))
 
 	_, err := s.client.Do(*req)
 	return err
 }
 
-func (s *ContactServiceOp) Info(contactId int) (*ContactInfoResponse, error) {
+// Info Get information about a contact.
+func (s *ContactService) Info(contactID int) (*ContactInfoResponse, error) {
 	var requestMap = make(map[string]interface{})
 	requestMap["wide"] = 1
 
-	if contactId != 0 {
-		requestMap["id"] = contactId
+	if contactID != 0 {
+		requestMap["id"] = contactID
 	}
 
 	req := s.client.NewRequest(methodContactInfo, requestMap)
@@ -84,7 +77,8 @@ func (s *ContactServiceOp) Info(contactId int) (*ContactInfoResponse, error) {
 	return &result, nil
 }
 
-func (s *ContactServiceOp) List(search string) (*ContactListResponse, error) {
+// List Search contacts.
+func (s *ContactService) List(search string) (*ContactListResponse, error) {
 	var requestMap = make(map[string]interface{})
 
 	if search != "" {
@@ -106,6 +100,7 @@ func (s *ContactServiceOp) List(search string) (*ContactListResponse, error) {
 	return &result, nil
 }
 
+// ContactCreateRequest API model.
 type ContactCreateRequest struct {
 	Type          string `structs:"type"`
 	Name          string `structs:"name"`
@@ -123,8 +118,9 @@ type ContactCreateRequest struct {
 	Testing       bool   `structs:"testing,omitempty"`
 }
 
+// ContactUpdateRequest API model.
 type ContactUpdateRequest struct {
-	Id            int    `structs:"id"`
+	ID            int    `structs:"id"`
 	Name          string `structs:"name,omitempty"`
 	Org           string `structs:"org,omitempty"`
 	Street        string `structs:"street,omitempty"`
@@ -140,10 +136,12 @@ type ContactUpdateRequest struct {
 	Testing       bool   `structs:"testing,omitempty"`
 }
 
+// ContactInfoResponse API model.
 type ContactInfoResponse struct {
 	Contact Contact `mapstructure:"contact"`
 }
 
+// ContactListResponse API model.
 type ContactListResponse struct {
 	Count    int
 	Contacts []Contact `mapstructure:"contact"`
