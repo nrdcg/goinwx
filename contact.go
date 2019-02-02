@@ -21,53 +21,10 @@ type ContactService interface {
 	List(string) (*ContactListResponse, error)
 }
 
-type ContactServiceOp struct {
-	client *Client
-}
-
 var _ ContactService = &ContactServiceOp{}
 
-type ContactCreateRequest struct {
-	Type          string `structs:"type"`
-	Name          string `structs:"name"`
-	Org           string `structs:"org,omitempty"`
-	Street        string `structs:"street"`
-	City          string `structs:"city"`
-	PostalCode    string `structs:"pc"`
-	StateProvince string `structs:"sp,omitempty"`
-	CountryCode   string `structs:"cc"`
-	Voice         string `structs:"voice"`
-	Fax           string `structs:"fax,omitempty"`
-	Email         string `structs:"email"`
-	Remarks       string `structs:"remarks,omitempty"`
-	Protection    bool   `structs:"protection,omitempty"`
-	Testing       bool   `structs:"testing,omitempty"`
-}
-
-type ContactUpdateRequest struct {
-	Id            int    `structs:"id"`
-	Name          string `structs:"name,omitempty"`
-	Org           string `structs:"org,omitempty"`
-	Street        string `structs:"street,omitempty"`
-	City          string `structs:"city,omitempty"`
-	PostalCode    string `structs:"pc,omitempty"`
-	StateProvince string `structs:"sp,omitempty"`
-	CountryCode   string `structs:"cc,omitempty"`
-	Voice         string `structs:"voice,omitempty"`
-	Fax           string `structs:"fax,omitempty"`
-	Email         string `structs:"email,omitempty"`
-	Remarks       string `structs:"remarks,omitempty"`
-	Protection    bool   `structs:"protection,omitempty"`
-	Testing       bool   `structs:"testing,omitempty"`
-}
-
-type ContactInfoResponse struct {
-	Contact Contact `mapstructure:"contact"`
-}
-
-type ContactListResponse struct {
-	Count    int
-	Contacts []Contact `mapstructure:"contact"`
+type ContactServiceOp struct {
+	client *Client
 }
 
 func (s *ContactServiceOp) Create(request *ContactCreateRequest) (int, error) {
@@ -147,4 +104,47 @@ func (s *ContactServiceOp) List(search string) (*ContactListResponse, error) {
 	}
 
 	return &result, nil
+}
+
+type ContactCreateRequest struct {
+	Type          string `structs:"type"`
+	Name          string `structs:"name"`
+	Org           string `structs:"org,omitempty"`
+	Street        string `structs:"street"`
+	City          string `structs:"city"`
+	PostalCode    string `structs:"pc"`
+	StateProvince string `structs:"sp,omitempty"`
+	CountryCode   string `structs:"cc"`
+	Voice         string `structs:"voice"`
+	Fax           string `structs:"fax,omitempty"`
+	Email         string `structs:"email"`
+	Remarks       string `structs:"remarks,omitempty"`
+	Protection    bool   `structs:"protection,omitempty"`
+	Testing       bool   `structs:"testing,omitempty"`
+}
+
+type ContactUpdateRequest struct {
+	Id            int    `structs:"id"`
+	Name          string `structs:"name,omitempty"`
+	Org           string `structs:"org,omitempty"`
+	Street        string `structs:"street,omitempty"`
+	City          string `structs:"city,omitempty"`
+	PostalCode    string `structs:"pc,omitempty"`
+	StateProvince string `structs:"sp,omitempty"`
+	CountryCode   string `structs:"cc,omitempty"`
+	Voice         string `structs:"voice,omitempty"`
+	Fax           string `structs:"fax,omitempty"`
+	Email         string `structs:"email,omitempty"`
+	Remarks       string `structs:"remarks,omitempty"`
+	Protection    bool   `structs:"protection,omitempty"`
+	Testing       bool   `structs:"testing,omitempty"`
+}
+
+type ContactInfoResponse struct {
+	Contact Contact `mapstructure:"contact"`
+}
+
+type ContactListResponse struct {
+	Count    int
+	Contacts []Contact `mapstructure:"contact"`
 }

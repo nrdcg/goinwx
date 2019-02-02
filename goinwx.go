@@ -1,14 +1,12 @@
 package goinwx
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/kolo/xmlrpc"
 )
 
 const (
-	libraryVersion    = "0.4.0"
 	APIBaseUrl        = "https://api.domrobot.com/xmlrpc/"
 	APISandboxBaseUrl = "https://api.ote.domrobot.com/xmlrpc/"
 	APILanguage       = "eng"
@@ -45,23 +43,6 @@ type ClientOptions struct {
 type Request struct {
 	ServiceMethod string
 	Args          map[string]interface{}
-}
-
-// Response is a INWX API response. This wraps the standard http.Response returned from INWX.
-type Response struct {
-	Code         int                    `xmlrpc:"code"`
-	Message      string                 `xmlrpc:"msg"`
-	ReasonCode   string                 `xmlrpc:"reasonCode"`
-	Reason       string                 `xmlrpc:"reason"`
-	ResponseData map[string]interface{} `xmlrpc:"resData"`
-}
-
-// An ErrorResponse reports the error caused by an API request
-type ErrorResponse struct {
-	Code       int    `xmlrpc:"code"`
-	Message    string `xmlrpc:"msg"`
-	ReasonCode string `xmlrpc:"reasonCode"`
-	Reason     string `xmlrpc:"reason"`
 }
 
 // NewClient returns a new INWX API client.
@@ -113,14 +94,6 @@ func (c *Client) Do(req Request) (*map[string]interface{}, error) {
 	}
 
 	return &resp.ResponseData, CheckResponse(&resp)
-}
-
-func (r *ErrorResponse) Error() string {
-	if r.Reason != "" {
-		return fmt.Sprintf("(%d) %s. Reason: (%s) %s",
-			r.Code, r.Message, r.ReasonCode, r.Reason)
-	}
-	return fmt.Sprintf("(%d) %s", r.Code, r.Message)
 }
 
 // CheckResponse checks the API response for errors, and returns them if present.

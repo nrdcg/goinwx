@@ -39,134 +39,10 @@ type DomainService interface {
 	Whois(domain string) (string, error)
 }
 
-type DomainServiceOp struct {
-	client *Client
-}
-
 var _ DomainService = &DomainServiceOp{}
 
-type domainCheckResponseRoot struct {
-	Domains []DomainCheckResponse `mapstructure:"domain"`
-}
-type DomainCheckResponse struct {
-	Available   int     `mapstructure:"avail"`
-	Status      string  `mapstructure:"status"`
-	Name        string  `mapstructure:"name"`
-	Domain      string  `mapstructure:"domain"`
-	TLD         string  `mapstructure:"tld"`
-	CheckMethod string  `mapstructure:"checkmethod"`
-	Price       float32 `mapstructure:"price"`
-	CheckTime   float32 `mapstructure:"checktime"`
-}
-
-type domainPriceResponseRoot struct {
-	Prices []DomainPriceResponse `mapstructure:"price"`
-}
-type DomainPriceResponse struct {
-	Tld                 string  `mapstructure:"tld"`
-	Currency            string  `mapstructure:"currency"`
-	CreatePrice         float32 `mapstructure:"createPrice"`
-	MonthlyCreatePrice  float32 `mapstructure:"monthlyCreatePrice"`
-	TransferPrice       float32 `mapstructure:"transferPrice"`
-	RenewalPrice        float32 `mapstructure:"renewalPrice"`
-	MonthlyRenewalPrice float32 `mapstructure:"monthlyRenewalPrice"`
-	UpdatePrice         float32 `mapstructure:"updatePrice"`
-	TradePrice          float32 `mapstructure:"tradePrice"`
-	TrusteePrice        float32 `mapstructure:"trusteePrice"`
-	MonthlyTrusteePrice float32 `mapstructure:"monthlyTrusteePrice"`
-	CreatePeriod        int     `mapstructure:"createPeriod"`
-	TransferPeriod      int     `mapstructure:"transferPeriod"`
-	RenewalPeriod       int     `mapstructure:"renewalPeriod"`
-	TradePeriod         int     `mapstructure:"tradePeriod"`
-}
-
-type DomainRegisterRequest struct {
-	Domain        string   `structs:"domain"`
-	Period        string   `structs:"period,omitempty"`
-	Registrant    int      `structs:"registrant"`
-	Admin         int      `structs:"admin"`
-	Tech          int      `structs:"tech"`
-	Billing       int      `structs:"billing"`
-	Nameservers   []string `structs:"ns,omitempty"`
-	TransferLock  string   `structs:"transferLock,omitempty"`
-	RenewalMode   string   `structs:"renewalMode,omitempty"`
-	WhoisProvider string   `structs:"whoisProvider,omitempty"`
-	WhoisUrl      string   `structs:"whoisUrl,omitempty"`
-	ScDate        string   `structs:"scDate,omitempty"`
-	ExtDate       string   `structs:"extDate,omitempty"`
-	Asynchron     string   `structs:"asynchron,omitempty"`
-	Voucher       string   `structs:"voucher,omitempty"`
-	Testing       string   `structs:"testing,omitempty"`
-}
-
-type DomainRegisterResponse struct {
-	RoId     int
-	Price    float32
-	Currency string
-}
-
-type DomainInfoResponse struct {
-	RoId         int                `mapstructure:"roId"`
-	Domain       string             `mapstructure:"domain"`
-	DomainAce    string             `mapstructure:"domainAce"`
-	Period       string             `mapstructure:"period"`
-	CrDate       time.Time          `mapstructure:"crDate"`
-	ExDate       time.Time          `mapstructure:"exDate"`
-	UpDate       time.Time          `mapstructure:"upDate"`
-	ReDate       time.Time          `mapstructure:"reDate"`
-	ScDate       time.Time          `mapstructure:"scDate"`
-	TransferLock int                `mapstructure:"transferLock"`
-	Status       string             `mapstructure:"status"`
-	AuthCode     string             `mapstructure:"authCode"`
-	RenewalMode  string             `mapstructure:"renewalMode"`
-	TransferMode string             `mapstructure:"transferMode"`
-	Registrant   int                `mapstructure:"registrant"`
-	Admin        int                `mapstructure:"admin"`
-	Tech         int                `mapstructure:"tech"`
-	Billing      int                `mapstructure:"billing"`
-	Nameservers  []string           `mapstructure:"ns"`
-	NoDelegation string             `mapstructure:"noDelegation"`
-	Contacts     map[string]Contact `mapstructure:"contact"`
-}
-
-type Contact struct {
-	RoId          int
-	Id            string
-	Type          string
-	Name          string
-	Org           string
-	Street        string
-	City          string
-	PostalCode    string `mapstructure:"pc"`
-	StateProvince string `mapstructure:"sp"`
-	Country       string `mapstructure:"cc"`
-	Phone         string `mapstructure:"voice"`
-	Fax           string
-	Email         string
-	Remarks       string
-	Protection    string
-}
-
-type DomainListRequest struct {
-	Domain       string `structs:"domain,omitempty"`
-	RoId         int    `structs:"roId,omitempty"`
-	Status       int    `structs:"status,omitempty"`
-	Registrant   int    `structs:"registrant,omitempty"`
-	Admin        int    `structs:"admin,omitempty"`
-	Tech         int    `structs:"tech,omitempty"`
-	Billing      int    `structs:"billing,omitempty"`
-	RenewalMode  int    `structs:"renewalMode,omitempty"`
-	TransferLock int    `structs:"transferLock,omitempty"`
-	NoDelegation int    `structs:"noDelegation,omitempty"`
-	Tag          int    `structs:"tag,omitempty"`
-	Order        int    `structs:"order,omitempty"`
-	Page         int    `structs:"page,omitempty"`
-	Pagelimit    int    `structs:"pagelimit,omitempty"`
-}
-
-type DomainList struct {
-	Count   int
-	Domains []DomainInfoResponse `mapstructure:"domain"`
+type DomainServiceOp struct {
+	client *Client
 }
 
 func (s *DomainServiceOp) Check(domains []string) ([]DomainCheckResponse, error) {
@@ -300,4 +176,130 @@ func (s *DomainServiceOp) Whois(domain string) (string, error) {
 	}
 
 	return result["whois"], nil
+}
+
+type domainCheckResponseRoot struct {
+	Domains []DomainCheckResponse `mapstructure:"domain"`
+}
+
+type DomainCheckResponse struct {
+	Available   int     `mapstructure:"avail"`
+	Status      string  `mapstructure:"status"`
+	Name        string  `mapstructure:"name"`
+	Domain      string  `mapstructure:"domain"`
+	TLD         string  `mapstructure:"tld"`
+	CheckMethod string  `mapstructure:"checkmethod"`
+	Price       float32 `mapstructure:"price"`
+	CheckTime   float32 `mapstructure:"checktime"`
+}
+
+type domainPriceResponseRoot struct {
+	Prices []DomainPriceResponse `mapstructure:"price"`
+}
+
+type DomainPriceResponse struct {
+	Tld                 string  `mapstructure:"tld"`
+	Currency            string  `mapstructure:"currency"`
+	CreatePrice         float32 `mapstructure:"createPrice"`
+	MonthlyCreatePrice  float32 `mapstructure:"monthlyCreatePrice"`
+	TransferPrice       float32 `mapstructure:"transferPrice"`
+	RenewalPrice        float32 `mapstructure:"renewalPrice"`
+	MonthlyRenewalPrice float32 `mapstructure:"monthlyRenewalPrice"`
+	UpdatePrice         float32 `mapstructure:"updatePrice"`
+	TradePrice          float32 `mapstructure:"tradePrice"`
+	TrusteePrice        float32 `mapstructure:"trusteePrice"`
+	MonthlyTrusteePrice float32 `mapstructure:"monthlyTrusteePrice"`
+	CreatePeriod        int     `mapstructure:"createPeriod"`
+	TransferPeriod      int     `mapstructure:"transferPeriod"`
+	RenewalPeriod       int     `mapstructure:"renewalPeriod"`
+	TradePeriod         int     `mapstructure:"tradePeriod"`
+}
+
+type DomainRegisterRequest struct {
+	Domain        string   `structs:"domain"`
+	Period        string   `structs:"period,omitempty"`
+	Registrant    int      `structs:"registrant"`
+	Admin         int      `structs:"admin"`
+	Tech          int      `structs:"tech"`
+	Billing       int      `structs:"billing"`
+	Nameservers   []string `structs:"ns,omitempty"`
+	TransferLock  string   `structs:"transferLock,omitempty"`
+	RenewalMode   string   `structs:"renewalMode,omitempty"`
+	WhoisProvider string   `structs:"whoisProvider,omitempty"`
+	WhoisUrl      string   `structs:"whoisUrl,omitempty"`
+	ScDate        string   `structs:"scDate,omitempty"`
+	ExtDate       string   `structs:"extDate,omitempty"`
+	Asynchron     string   `structs:"asynchron,omitempty"`
+	Voucher       string   `structs:"voucher,omitempty"`
+	Testing       string   `structs:"testing,omitempty"`
+}
+
+type DomainRegisterResponse struct {
+	RoId     int
+	Price    float32
+	Currency string
+}
+
+type DomainInfoResponse struct {
+	RoId         int                `mapstructure:"roId"`
+	Domain       string             `mapstructure:"domain"`
+	DomainAce    string             `mapstructure:"domainAce"`
+	Period       string             `mapstructure:"period"`
+	CrDate       time.Time          `mapstructure:"crDate"`
+	ExDate       time.Time          `mapstructure:"exDate"`
+	UpDate       time.Time          `mapstructure:"upDate"`
+	ReDate       time.Time          `mapstructure:"reDate"`
+	ScDate       time.Time          `mapstructure:"scDate"`
+	TransferLock int                `mapstructure:"transferLock"`
+	Status       string             `mapstructure:"status"`
+	AuthCode     string             `mapstructure:"authCode"`
+	RenewalMode  string             `mapstructure:"renewalMode"`
+	TransferMode string             `mapstructure:"transferMode"`
+	Registrant   int                `mapstructure:"registrant"`
+	Admin        int                `mapstructure:"admin"`
+	Tech         int                `mapstructure:"tech"`
+	Billing      int                `mapstructure:"billing"`
+	Nameservers  []string           `mapstructure:"ns"`
+	NoDelegation string             `mapstructure:"noDelegation"`
+	Contacts     map[string]Contact `mapstructure:"contact"`
+}
+
+type Contact struct {
+	RoId          int
+	Id            string
+	Type          string
+	Name          string
+	Org           string
+	Street        string
+	City          string
+	PostalCode    string `mapstructure:"pc"`
+	StateProvince string `mapstructure:"sp"`
+	Country       string `mapstructure:"cc"`
+	Phone         string `mapstructure:"voice"`
+	Fax           string
+	Email         string
+	Remarks       string
+	Protection    string
+}
+
+type DomainListRequest struct {
+	Domain       string `structs:"domain,omitempty"`
+	RoId         int    `structs:"roId,omitempty"`
+	Status       int    `structs:"status,omitempty"`
+	Registrant   int    `structs:"registrant,omitempty"`
+	Admin        int    `structs:"admin,omitempty"`
+	Tech         int    `structs:"tech,omitempty"`
+	Billing      int    `structs:"billing,omitempty"`
+	RenewalMode  int    `structs:"renewalMode,omitempty"`
+	TransferLock int    `structs:"transferLock,omitempty"`
+	NoDelegation int    `structs:"noDelegation,omitempty"`
+	Tag          int    `structs:"tag,omitempty"`
+	Order        int    `structs:"order,omitempty"`
+	Page         int    `structs:"page,omitempty"`
+	Pagelimit    int    `structs:"pagelimit,omitempty"`
+}
+
+type DomainList struct {
+	Count   int
+	Domains []DomainInfoResponse `mapstructure:"domain"`
 }

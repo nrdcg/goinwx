@@ -14,11 +14,11 @@ type AccountService interface {
 	Unlock(tan string) error
 }
 
+var _ AccountService = &AccountServiceOp{}
+
 type AccountServiceOp struct {
 	client *Client
 }
-
-var _ AccountService = &AccountServiceOp{}
 
 func (s *AccountServiceOp) Login() error {
 	req := s.client.NewRequest(methodAccountLogin, map[string]interface{}{

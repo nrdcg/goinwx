@@ -32,100 +32,10 @@ type NameserverService interface {
 	FindRecordById(recId int) (*NameserverRecord, *NameserverDomain, error)
 }
 
-type NameserverServiceOp struct {
-	client *Client
-}
-
 var _ NameserverService = &NameserverServiceOp{}
 
-type NameserverCheckResponse struct {
-	Details []string
-	Status  string
-}
-
-type NameserverRecordRequest struct {
-	RoId                   int    `structs:"roId,omitempty"`
-	Domain                 string `structs:"domain,omitempty"`
-	Type                   string `structs:"type"`
-	Content                string `structs:"content"`
-	Name                   string `structs:"name,omitempty"`
-	Ttl                    int    `structs:"ttl,omitempty"`
-	Priority               int    `structs:"prio,omitempty"`
-	UrlRedirectType        string `structs:"urlRedirectType,omitempty"`
-	UrlRedirectTitle       string `structs:"urlRedirectTitle,omitempty"`
-	UrlRedirectDescription string `structs:"urlRedirectDescription,omitempty"`
-	UrlRedirectFavIcon     string `structs:"urlRedirectFavIcon,omitempty"`
-	UrlRedirectKeywords    string `structs:"urlRedirectKeywords,omitempty"`
-}
-
-type NameserverCreateRequest struct {
-	Domain                 string   `structs:"domain"`
-	Type                   string   `structs:"type"`
-	Nameservers            []string `structs:"ns,omitempty"`
-	MasterIp               string   `structs:"masterIp,omitempty"`
-	Web                    string   `structs:"web,omitempty"`
-	Mail                   string   `structs:"mail,omitempty"`
-	SoaEmail               string   `structs:"soaEmail,omitempty"`
-	UrlRedirectType        string   `structs:"urlRedirectType,omitempty"`
-	UrlRedirectTitle       string   `structs:"urlRedirectTitle,omitempty"`
-	UrlRedirectDescription string   `structs:"urlRedirectDescription,omitempty"`
-	UrlRedirectFavIcon     string   `structs:"urlRedirectFavIcon,omitempty"`
-	UrlRedirectKeywords    string   `structs:"urlRedirectKeywords,omitempty"`
-	Testing                bool     `structs:"testing,omitempty"`
-}
-
-type NameserverInfoRequest struct {
-	Domain   string `structs:"domain,omitempty"`
-	RoId     int    `structs:"roId,omitempty"`
-	RecordId int    `structs:"recordId,omitempty"`
-	Type     string `structs:"type,omitempty"`
-	Name     string `structs:"name,omitempty"`
-	Content  string `structs:"content,omitempty"`
-	Ttl      int    `structs:"ttl,omitempty"`
-	Prio     int    `structs:"prio,omitempty"`
-}
-
-type NamserverInfoResponse struct {
-	RoId          int
-	Domain        string
-	Type          string
-	MasterIp      string
-	LastZoneCheck time.Time
-	SlaveDns      interface{}
-	SOAserial     string
-	Count         int
-	Records       []NameserverRecord `mapstructure:"record"`
-}
-
-type NameserverRecord struct {
-	Id                     int
-	Name                   string
-	Type                   string
-	Content                string
-	Ttl                    int
-	Prio                   int
-	UrlRedirectType        string
-	UrlRedirectTitle       string
-	UrlRedirectDescription string
-	UrlRedirectKeywords    string
-	UrlRedirectFavIcon     string
-}
-
-type NamserverListResponse struct {
-	Count   int
-	Domains []NameserverDomain `mapstructure:"domains"`
-}
-
-type NameserverDomain struct {
-	RoId     int    `mapstructure:"roId"`
-	Domain   string `mapstructure:"domain"`
-	Type     string `mapstructure:"type"`
-	MasterIp string `mapstructure:"masterIp"`
-	Mail     string `mapstructure:"mail"`
-	Web      string `mapstructure:"web"`
-	Url      string `mapstructure:"url"`
-	Ipv4     string `mapstructure:"ipv4"`
-	Ipv6     string `mapstructure:"ipv6"`
+type NameserverServiceOp struct {
+	client *Client
 }
 
 func (s *NameserverServiceOp) Check(domain string, nameservers []string) (*NameserverCheckResponse, error) {
@@ -272,4 +182,94 @@ func (s *NameserverServiceOp) FindRecordById(recId int) (*NameserverRecord, *Nam
 
 	return nil, nil, fmt.Errorf("couldn't find INWX Record for id %d", recId)
 
+}
+
+type NameserverCheckResponse struct {
+	Details []string
+	Status  string
+}
+
+type NameserverRecordRequest struct {
+	RoId                   int    `structs:"roId,omitempty"`
+	Domain                 string `structs:"domain,omitempty"`
+	Type                   string `structs:"type"`
+	Content                string `structs:"content"`
+	Name                   string `structs:"name,omitempty"`
+	Ttl                    int    `structs:"ttl,omitempty"`
+	Priority               int    `structs:"prio,omitempty"`
+	UrlRedirectType        string `structs:"urlRedirectType,omitempty"`
+	UrlRedirectTitle       string `structs:"urlRedirectTitle,omitempty"`
+	UrlRedirectDescription string `structs:"urlRedirectDescription,omitempty"`
+	UrlRedirectFavIcon     string `structs:"urlRedirectFavIcon,omitempty"`
+	UrlRedirectKeywords    string `structs:"urlRedirectKeywords,omitempty"`
+}
+
+type NameserverCreateRequest struct {
+	Domain                 string   `structs:"domain"`
+	Type                   string   `structs:"type"`
+	Nameservers            []string `structs:"ns,omitempty"`
+	MasterIp               string   `structs:"masterIp,omitempty"`
+	Web                    string   `structs:"web,omitempty"`
+	Mail                   string   `structs:"mail,omitempty"`
+	SoaEmail               string   `structs:"soaEmail,omitempty"`
+	UrlRedirectType        string   `structs:"urlRedirectType,omitempty"`
+	UrlRedirectTitle       string   `structs:"urlRedirectTitle,omitempty"`
+	UrlRedirectDescription string   `structs:"urlRedirectDescription,omitempty"`
+	UrlRedirectFavIcon     string   `structs:"urlRedirectFavIcon,omitempty"`
+	UrlRedirectKeywords    string   `structs:"urlRedirectKeywords,omitempty"`
+	Testing                bool     `structs:"testing,omitempty"`
+}
+
+type NameserverInfoRequest struct {
+	Domain   string `structs:"domain,omitempty"`
+	RoId     int    `structs:"roId,omitempty"`
+	RecordId int    `structs:"recordId,omitempty"`
+	Type     string `structs:"type,omitempty"`
+	Name     string `structs:"name,omitempty"`
+	Content  string `structs:"content,omitempty"`
+	Ttl      int    `structs:"ttl,omitempty"`
+	Prio     int    `structs:"prio,omitempty"`
+}
+
+type NamserverInfoResponse struct {
+	RoId          int
+	Domain        string
+	Type          string
+	MasterIp      string
+	LastZoneCheck time.Time
+	SlaveDns      interface{}
+	SOAserial     string
+	Count         int
+	Records       []NameserverRecord `mapstructure:"record"`
+}
+
+type NameserverRecord struct {
+	Id                     int
+	Name                   string
+	Type                   string
+	Content                string
+	Ttl                    int
+	Prio                   int
+	UrlRedirectType        string
+	UrlRedirectTitle       string
+	UrlRedirectDescription string
+	UrlRedirectKeywords    string
+	UrlRedirectFavIcon     string
+}
+
+type NamserverListResponse struct {
+	Count   int
+	Domains []NameserverDomain `mapstructure:"domains"`
+}
+
+type NameserverDomain struct {
+	RoId     int    `mapstructure:"roId"`
+	Domain   string `mapstructure:"domain"`
+	Type     string `mapstructure:"type"`
+	MasterIp string `mapstructure:"masterIp"`
+	Mail     string `mapstructure:"mail"`
+	Web      string `mapstructure:"web"`
+	Url      string `mapstructure:"url"`
+	Ipv4     string `mapstructure:"ipv4"`
+	Ipv6     string `mapstructure:"ipv6"`
 }
