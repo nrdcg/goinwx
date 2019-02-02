@@ -1,9 +1,8 @@
-# goinwx
-INWX Go API client
+# INWX Go API client
 
 This go library implements some parts of the official INWX XML-RPC API.
 
-Full API documentation can be found [here](https://www.inwx.de/en/help/apidoc)
+Full API documentation can be found [here](https://www.inwx.de/en/help/apidoc).
 
 The following parts are implemented:
 * Account
@@ -34,6 +33,5 @@ The following parts are implemented:
   * Create
   * Update
   * Delete
-
 
 Your contributions are very appreciated.
