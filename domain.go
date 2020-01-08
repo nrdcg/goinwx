@@ -2,7 +2,6 @@ package goinwx
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/fatih/structs"
@@ -123,7 +122,6 @@ func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, erro
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("Response", result)
 
 	return &result, nil
 }
@@ -133,6 +131,7 @@ func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 	if request == nil {
 		return nil, errors.New("request can't be nil")
 	}
+
 	requestMap := structs.Map(request)
 	requestMap["wide"] = "2"
 

@@ -24,5 +24,6 @@ func (r *ErrorResponse) Error() string {
 		return fmt.Sprintf("(%d) %s. Reason: (%s) %s",
 			r.Code, r.Message, r.ReasonCode, r.Reason)
 	}
+
 	return fmt.Sprintf("(%d) %s", r.Code, r.Message)
 }

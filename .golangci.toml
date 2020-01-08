@@ -27,14 +27,15 @@
     "lll",
     "gas",
     "dupl",
-    "prealloc",
-    "scopelint",
+    "gomnd",
+    "stylecheck",
+    "wsl",
   ]
 
 [issues]
   exclude-use-default = false
   max-per-linter = 0
-  max-same = 0
+  max-same-issues = 0
   exclude = [
     "`(methodDomainGetRules|methodDomainLog|methodDomainPush|methodDomainRenew|methodDomainRestore|methodDomainStats|methodDomainTrade|methodDomainTransfer|methodDomainTransferOut|methodDomainUpdate)` is unused",
     "`(methodNameserverUpdate|methodNameserverDelete)` is unused",
