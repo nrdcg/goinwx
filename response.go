@@ -11,7 +11,7 @@ type Response struct {
 	ResponseData map[string]interface{} `xmlrpc:"resData"`
 }
 
-// An ErrorResponse reports the error caused by an API request
+// An ErrorResponse reports the error caused by an API request.
 type ErrorResponse struct {
 	Code       int    `xmlrpc:"code"`
 	Message    string `xmlrpc:"msg"`
