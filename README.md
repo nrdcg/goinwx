@@ -36,7 +36,7 @@ func main() {
 		Name:    "foo.domain.com.",
 		Type:    "TXT",
 		Content: "aaa",
-		Ttl:     300,
+		TTL:     300,
 	}
 
 	_, err = client.Nameservers.CreateRecord(request)
