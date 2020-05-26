@@ -4,7 +4,6 @@
 [![GoDoc](https://godoc.org/github.com/nrdcg/goinwx?status.svg)](https://godoc.org/github.com/nrdcg/goinwx)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nrdcg/goinwx)](https://goreportcard.com/report/github.com/nrdcg/goinwx)
 
-
 This go library implements some parts of the official INWX XML-RPC API.
 
 ## API
@@ -21,7 +20,7 @@ import (
 func main() {
 	client := goinwx.NewClient("username", "password", &goinwx.ClientOptions{Sandbox: true})
 
-	err := client.Account.Login()
+	_, err := client.Account.Login()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,6 +51,7 @@ func main() {
 Full API documentation can be found [here](https://www.inwx.de/en/help/apidoc).
 
 The following parts are implemented:
+
 * Account
   * Login
   * Logout
