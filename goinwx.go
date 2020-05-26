@@ -18,9 +18,6 @@ type Client struct {
 	// HTTP client used to communicate with the INWX API.
 	RPCClient *xmlrpc.Client
 
-	// Base URL for API requests.
-	BaseURL *url.URL
-
 	// API username and password
 	username string
 	password string
@@ -41,6 +38,9 @@ type service struct {
 // ClientOptions Options of the API client.
 type ClientOptions struct {
 	Sandbox bool
+
+	// Base URL for API requests.
+	BaseURL *url.URL
 }
 
 // Request The representation of an API request.
@@ -64,11 +64,14 @@ func NewClient(username, password string, opts *ClientOptions) *Client {
 		baseURL, _ = url.Parse(APIBaseURL)
 	}
 
+	if opts != nil && opts.BaseURL != nil {
+		baseURL = opts.BaseURL
+	}
+
 	rpcClient, _ := xmlrpc.NewClient(baseURL.String(), nil)
 
 	client := &Client{
 		RPCClient: rpcClient,
-		BaseURL:   baseURL,
 		username:  username,
 		password:  password,
 	}
