@@ -48,7 +48,11 @@ func main() {
 
 ### Using 2FA
 
-If it is desired to use 2FA without manual entering the TOTP every time, you must set the parameter `otp-key` to the secret that is shown during the setup of 2FA for you INWX account. Otherwise, you can skip `totp.GenerateCode` step and enter the verification code of the Google Authenticator app every time manually. The `otp-key` looks something like `EELTWFL55ESIHPTJAAHBCY7LXBZARUOJ`.
+If it is desired to use 2FA without manual entering the TOTP every time,
+you must set the parameter `otp-key` to the secret that is shown during the setup of 2FA for you INWX account.
+Otherwise, you can skip `totp.GenerateCode` step and enter the verification code of the Google Authenticator app every time manually.
+
+The `otp-key` looks something like `EELTWFL55ESIHPTJAAHBCY7LXBZARUOJ`.
 
 ```go
 package main
@@ -64,13 +68,21 @@ import (
 func main() {
 	client := goinwx.NewClient("username", "password", &goinwx.ClientOptions{Sandbox: true})
 
-	_, err := client.Account.Login()
+	resp, err := client.Account.Login()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	str, _ := totp.GenerateCode("otp-key", time.Now())
-	err = client.Account.Unlock(str)
+	if resp.TFA != "GOOGLE-AUTH" {
+		log.Fatal("unsupported 2 Factor Authentication")
+	}
+
+	tan, err := totp.GenerateCode("otp-key", time.Now())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = client.Account.Unlock(tan)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -81,7 +93,7 @@ func main() {
 		}
 	}()
 
-	var request = &goinwx.NameserverRecordRequest{
+	request := &goinwx.NameserverRecordRequest{
 		Domain:  "domain.com",
 		Name:    "foo.domain.com.",
 		Type:    "TXT",
