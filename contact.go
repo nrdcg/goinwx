@@ -54,7 +54,7 @@ func (s *ContactService) Update(request *ContactUpdateRequest) error {
 
 // Info Get information about a contact.
 func (s *ContactService) Info(contactID int) (*ContactInfoResponse, error) {
-	var requestMap = make(map[string]interface{})
+	requestMap := make(map[string]interface{})
 	requestMap["wide"] = 1
 
 	if contactID != 0 {
@@ -79,7 +79,7 @@ func (s *ContactService) Info(contactID int) (*ContactInfoResponse, error) {
 
 // List Search contacts.
 func (s *ContactService) List(search string) (*ContactListResponse, error) {
-	var requestMap = make(map[string]interface{})
+	requestMap := make(map[string]interface{})
 
 	if search != "" {
 		requestMap["search"] = search
