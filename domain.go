@@ -171,6 +171,17 @@ func (s *DomainService) Whois(domain string) (string, error) {
 	return result["whois"], nil
 }
 
+func (s *DomainService) Update(request *DomainUpdateRequest) (error) {
+	req := s.client.NewRequest(methodDomainUpdate, structs.Map(request))
+
+	_, err := s.client.Do(*req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 type domainCheckResponseRoot struct {
 	Domains []DomainCheckResponse `mapstructure:"domain"`
 }
@@ -303,4 +314,15 @@ type DomainListRequest struct {
 type DomainList struct {
 	Count   int
 	Domains []DomainInfoResponse `mapstructure:"domain"`
+}
+
+// DomainUpdateRequest API model
+type DomainUpdateRequest struct {
+	Domain       string             `structs:"domain"`
+	Nameservers  []string           `structs:"ns,omitempty"`
+	TransferLock int                `structs:"transferLock,omitempty"`
+	AuthCode     string             `structs:"authCode,omitempty"`
+	ScDate       time.Time          `structs:"scDate,omitempty"`
+	RenewalMode  string             `structs:"renewalMode,omitempty"`
+	TransferMode string             `structs:"transferMode,omitempty"`
 }
