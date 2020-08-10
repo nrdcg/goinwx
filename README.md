@@ -127,6 +127,7 @@ The following parts are implemented:
   * GetPrices
   * List
   * Whois
+  * Update
 * Nameservers
   * Check
   * Create
