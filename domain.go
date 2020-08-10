@@ -171,15 +171,21 @@ func (s *DomainService) Whois(domain string) (string, error) {
 	return result["whois"], nil
 }
 
-func (s *DomainService) Update(request *DomainUpdateRequest) (error) {
+func (s *DomainService) Update(request *DomainUpdateRequest) (float32, error) {
 	req := s.client.NewRequest(methodDomainUpdate, structs.Map(request))
 
-	_, err := s.client.Do(*req)
+	resp, err := s.client.Do(*req)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	var result DomainUpdateResponse
+	err = mapstructure.Decode(*resp, &result)
+	if err != nil {
+		return 0, err
+	}
+
+	return result.Price, nil
 }
 
 type domainCheckResponseRoot struct {
@@ -318,11 +324,16 @@ type DomainList struct {
 
 // DomainUpdateRequest API model
 type DomainUpdateRequest struct {
-	Domain       string             `structs:"domain"`
-	Nameservers  []string           `structs:"ns,omitempty"`
-	TransferLock int                `structs:"transferLock,omitempty"`
-	AuthCode     string             `structs:"authCode,omitempty"`
-	ScDate       time.Time          `structs:"scDate,omitempty"`
-	RenewalMode  string             `structs:"renewalMode,omitempty"`
-	TransferMode string             `structs:"transferMode,omitempty"`
+	Domain       string    `structs:"domain"`
+	Nameservers  []string  `structs:"ns,omitempty"`
+	TransferLock int       `structs:"transferLock,omitempty"`
+	AuthCode     string    `structs:"authCode,omitempty"`
+	ScDate       time.Time `structs:"scDate,omitempty"`
+	RenewalMode  string    `structs:"renewalMode,omitempty"`
+	TransferMode string    `structs:"transferMode,omitempty"`
+}
+
+// DomainUpdateResponse API model
+type DomainUpdateResponse struct {
+	Price float32 `mapstructure:"price"`
 }
