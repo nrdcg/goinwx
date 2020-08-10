@@ -171,6 +171,24 @@ func (s *DomainService) Whois(domain string) (string, error) {
 	return result["whois"], nil
 }
 
+// Update Updates domain information.
+func (s *DomainService) Update(request *DomainUpdateRequest) (float32, error) {
+	req := s.client.NewRequest(methodDomainUpdate, structs.Map(request))
+
+	resp, err := s.client.Do(*req)
+	if err != nil {
+		return 0, err
+	}
+
+	var result DomainUpdateResponse
+	err = mapstructure.Decode(*resp, &result)
+	if err != nil {
+		return 0, err
+	}
+
+	return result.Price, nil
+}
+
 type domainCheckResponseRoot struct {
 	Domains []DomainCheckResponse `mapstructure:"domain"`
 }
@@ -303,4 +321,30 @@ type DomainListRequest struct {
 type DomainList struct {
 	Count   int
 	Domains []DomainInfoResponse `mapstructure:"domain"`
+}
+
+// DomainUpdateRequest API model.
+type DomainUpdateRequest struct {
+	Domain       string   `structs:"domain"`
+	Nameservers  []string `structs:"ns,omitempty"`
+	TransferLock int      `structs:"transferLock,omitempty"`
+	RenewalMode  string   `structs:"renewalMode,omitempty"`
+	TransferMode string   `structs:"transferMode,omitempty"`
+	// unsupported fields:
+	// registrant	New owner contact handle id	int	false
+	// admin	New administrative contact handle id	int	false
+	// tech	New technical contact handle id	int	false
+	// billing	New billing contact handle id	int	false
+	// authCode	Authorization code (if supported)	text64	false
+	// scDate	Time of scheduled execution	timestamp	false
+	// whoisProvider	Whois provider	token0255	false
+	// whoisUrl	Whois url	token0255	false
+	// extData	Domain extra data	extData	false
+	// asynchron	Asynchron domain update	boolean	false	false
+	// testing	Execute command in testing mode	boolean	false	false
+}
+
+// DomainUpdateResponse API model.
+type DomainUpdateResponse struct {
+	Price float32 `mapstructure:"price"`
 }
