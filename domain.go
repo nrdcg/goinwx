@@ -324,13 +324,23 @@ type DomainList struct {
 
 // DomainUpdateRequest API model
 type DomainUpdateRequest struct {
-	Domain       string    `structs:"domain"`
-	Nameservers  []string  `structs:"ns,omitempty"`
-	TransferLock int       `structs:"transferLock,omitempty"`
-	AuthCode     string    `structs:"authCode,omitempty"`
-	ScDate       time.Time `structs:"scDate,omitempty"`
-	RenewalMode  string    `structs:"renewalMode,omitempty"`
-	TransferMode string    `structs:"transferMode,omitempty"`
+	Domain       string   `structs:"domain"`
+	Nameservers  []string `structs:"ns,omitempty"`
+	TransferLock int      `structs:"transferLock,omitempty"`
+	RenewalMode  string   `structs:"renewalMode,omitempty"`
+	TransferMode string   `structs:"transferMode,omitempty"`
+	// unsupported fields:
+	// registrant	New owner contact handle id	int	false
+	// admin	New administrative contact handle id	int	false
+	// tech	New technical contact handle id	int	false
+	// billing	New billing contact handle id	int	false
+	// authCode	Authorization code (if supported)	text64	false
+	// scDate	Time of scheduled execution	timestamp	false
+	// whoisProvider	Whois provider	token0255	false
+	// whoisUrl	Whois url	token0255	false
+	// extData	Domain extra data	extData	false
+	// asynchron	Asynchron domain update	boolean	false	false
+	// testing	Execute command in testing mode	boolean	false	false
 }
 
 // DomainUpdateResponse API model
