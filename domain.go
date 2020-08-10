@@ -171,6 +171,7 @@ func (s *DomainService) Whois(domain string) (string, error) {
 	return result["whois"], nil
 }
 
+// Update Updates domain information.
 func (s *DomainService) Update(request *DomainUpdateRequest) (float32, error) {
 	req := s.client.NewRequest(methodDomainUpdate, structs.Map(request))
 
@@ -322,7 +323,7 @@ type DomainList struct {
 	Domains []DomainInfoResponse `mapstructure:"domain"`
 }
 
-// DomainUpdateRequest API model
+// DomainUpdateRequest API model.
 type DomainUpdateRequest struct {
 	Domain       string   `structs:"domain"`
 	Nameservers  []string `structs:"ns,omitempty"`
@@ -343,7 +344,7 @@ type DomainUpdateRequest struct {
 	// testing	Execute command in testing mode	boolean	false	false
 }
 
-// DomainUpdateResponse API model
+// DomainUpdateResponse API model.
 type DomainUpdateResponse struct {
 	Price float32 `mapstructure:"price"`
 }
