@@ -276,7 +276,7 @@ type DomainInfoResponse struct {
 	Tech         int                `mapstructure:"tech"`
 	Billing      int                `mapstructure:"billing"`
 	Nameservers  []string           `mapstructure:"ns"`
-	NoDelegation string             `mapstructure:"noDelegation"`
+	NoDelegation int                `mapstructure:"noDelegation"`
 	Contacts     map[string]Contact `mapstructure:"contact"`
 }
 
