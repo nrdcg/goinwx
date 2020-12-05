@@ -29,9 +29,14 @@
     "gomnd",
     "stylecheck",
     "wsl",
-    "goerr113",
-    "testpackage",
     "nlreturn",
+    "goerr113",
+    "wrapcheck",
+    "testpackage",
+    "paralleltest",
+    "tparallel",
+    "noctx",
+    "exhaustivestruct",
   ]
 
 [issues]
