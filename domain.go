@@ -38,13 +38,13 @@ func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
 		"wide":   "2",
 	})
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
 	root := new(domainCheckResponseRoot)
-	err = mapstructure.Decode(*resp, &root)
+	err = mapstructure.Decode(resp, &root)
 	if err != nil {
 		return nil, err
 	}
@@ -59,13 +59,13 @@ func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) 
 		"vat": false,
 	})
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
 	root := new(domainPriceResponseRoot)
-	err = mapstructure.Decode(*resp, &root)
+	err = mapstructure.Decode(resp, &root)
 	if err != nil {
 		return nil, err
 	}
@@ -77,13 +77,13 @@ func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) 
 func (s *DomainService) Register(request *DomainRegisterRequest) (*DomainRegisterResponse, error) {
 	req := s.client.NewRequest(methodDomainCreate, structs.Map(request))
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
 	var result DomainRegisterResponse
-	err = mapstructure.Decode(*resp, &result)
+	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
 		"scDate": scheduledDate.Format(time.RFC3339),
 	})
 
-	_, err := s.client.Do(*req)
+	_, err := s.client.Do(req)
 	return err
 }
 
@@ -112,13 +112,13 @@ func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, erro
 		req.Args["roId"] = roID
 	}
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
 	var result DomainInfoResponse
-	err = mapstructure.Decode(*resp, &result)
+	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -137,13 +137,13 @@ func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 
 	req := s.client.NewRequest(methodDomainList, requestMap)
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
 	var result DomainList
-	err = mapstructure.Decode(*resp, &result)
+	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -157,13 +157,13 @@ func (s *DomainService) Whois(domain string) (string, error) {
 		"domain": domain,
 	})
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return "", err
 	}
 
 	var result map[string]string
-	err = mapstructure.Decode(*resp, &result)
+	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return "", err
 	}
@@ -175,13 +175,13 @@ func (s *DomainService) Whois(domain string) (string, error) {
 func (s *DomainService) Update(request *DomainUpdateRequest) (float32, error) {
 	req := s.client.NewRequest(methodDomainUpdate, structs.Map(request))
 
-	resp, err := s.client.Do(*req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return 0, err
 	}
 
 	var result DomainUpdateResponse
-	err = mapstructure.Decode(*resp, &result)
+	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return 0, err
 	}
