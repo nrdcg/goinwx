@@ -31,7 +31,7 @@ const (
 // DomainService API access to Domain.
 type DomainService service
 
-// Check Checks domains.
+// Check checks domains.
 func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
 	req := s.client.NewRequest(methodDomainCheck, map[string]interface{}{
 		"domain": domains,
@@ -52,7 +52,7 @@ func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
 	return root.Domains, nil
 }
 
-// GetPrices Gets TLDS prices.
+// GetPrices gets TLDS prices.
 func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) {
 	req := s.client.NewRequest(methodDomainGetPrices, map[string]interface{}{
 		"tld": tlds,
@@ -73,7 +73,7 @@ func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) 
 	return root.Prices, nil
 }
 
-// Register Register a domain.
+// Register registers a domain.
 func (s *DomainService) Register(request *DomainRegisterRequest) (*DomainRegisterResponse, error) {
 	req := s.client.NewRequest(methodDomainCreate, structs.Map(request))
 
@@ -91,7 +91,7 @@ func (s *DomainService) Register(request *DomainRegisterRequest) (*DomainRegiste
 	return &result, nil
 }
 
-// Delete Deletes a domain.
+// Delete deletes a domain.
 func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
 	req := s.client.NewRequest(methodDomainDelete, map[string]interface{}{
 		"domain": domain,
@@ -102,7 +102,7 @@ func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
 	return err
 }
 
-// Info Gets information about a domain.
+// Info gets information about a domain.
 func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, error) {
 	req := s.client.NewRequest(methodDomainInfo, map[string]interface{}{
 		"domain": domain,
@@ -126,7 +126,7 @@ func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, erro
 	return &result, nil
 }
 
-// List List domains.
+// List lists domains.
 func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 	if request == nil {
 		return nil, errors.New("request can't be nil")
@@ -151,7 +151,7 @@ func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 	return &result, nil
 }
 
-// Whois Whois about a domains.
+// Whois information about a domains.
 func (s *DomainService) Whois(domain string) (string, error) {
 	req := s.client.NewRequest(methodDomainWhois, map[string]interface{}{
 		"domain": domain,
@@ -171,7 +171,7 @@ func (s *DomainService) Whois(domain string) (string, error) {
 	return result["whois"], nil
 }
 
-// Update Updates domain information.
+// Update updates domain information.
 func (s *DomainService) Update(request *DomainUpdateRequest) (float32, error) {
 	req := s.client.NewRequest(methodDomainUpdate, structs.Map(request))
 
@@ -331,17 +331,17 @@ type DomainUpdateRequest struct {
 	RenewalMode  string   `structs:"renewalMode,omitempty"`
 	TransferMode string   `structs:"transferMode,omitempty"`
 	// unsupported fields:
-	// registrant	New owner contact handle id	int	false
-	// admin	New administrative contact handle id	int	false
-	// tech	New technical contact handle id	int	false
-	// billing	New billing contact handle id	int	false
-	// authCode	Authorization code (if supported)	text64	false
-	// scDate	Time of scheduled execution	timestamp	false
-	// whoisProvider	Whois provider	token0255	false
-	// whoisUrl	Whois url	token0255	false
-	// extData	Domain extra data	extData	false
-	// asynchron	Asynchron domain update	boolean	false	false
-	// testing	Execute command in testing mode	boolean	false	false
+	// registrant:	New owner contact handle id	(int, false)
+	// admin:	New administrative contact handle id (int, false)
+	// tech:	New technical contact handle id	(int, false)
+	// billing:	New billing contact handle id	(int, false)
+	// authCode:	Authorization code (if supported)	(text64, false)
+	// scDate:	Time of scheduled execution	(timestamp, false)
+	// whoisProvider:	Whois provider	(token0255, false)
+	// whoisUrl:	Whois url	(token0255, false)
+	// extData:	Domain extra data	(extData, false)
+	// asynchron:	Asynchron domain update	boolean	(false, false)
+	// testing:	Execute command in testing mode	boolean	(false, false)
 }
 
 // DomainUpdateResponse API model.

@@ -48,12 +48,19 @@ linters-settings:
 linters:
   enable-all: true
   disable:
-    - maligned # deprecated
-    - interfacer # deprecated
-    - scopelint # deprecated
+    - deadcode # deprecated
+    - exhaustivestruct # deprecated
     - golint # deprecated
+    - ifshort # deprecated
+    - interfacer # deprecated
+    - maligned # deprecated
+    - nosnakecase # deprecated
+    - scopelint # deprecated
+    - structcheck # deprecated
+    - varcheck # deprecated
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
+    - execinquery # not relevant (SQL)
     - cyclop # duplicate of gocyclo
     - lll
     - dupl
@@ -63,7 +70,7 @@ linters:
     - goerr113
     - wrapcheck
     - exhaustive
-    - exhaustivestruct
+    - exhaustruct
     - testpackage
     - tparallel
     - paralleltest
@@ -80,8 +87,11 @@ issues:
     - "ST1000:"
     - "`(methodDomainGetRules|methodDomainLog|methodDomainPush|methodDomainRenew|methodDomainRestore|methodDomainStats|methodDomainTrade|methodDomainTransfer|methodDomainTransferOut|methodDomainUpdate)` is unused"
     - "`(methodNameserverUpdate|methodNameserverDelete)` is unused"
+    - "package-comments: should have a package comment"
   exclude-rules:
     - path: .*_test.go
       linters:
         - funlen
         - bodyclose
+    - path: response.go # errname
+      text: 'the type name `ErrorResponse` should conform to the `XxxError` format'
