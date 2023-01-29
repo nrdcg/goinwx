@@ -2,8 +2,8 @@ package goinwx
 
 import (
 	"errors"
-	"time"
 	"strconv"
+	"time"
 
 	"github.com/fatih/structs"
 	"github.com/mitchellh/mapstructure"
@@ -145,14 +145,13 @@ func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 
 	// This is a (temporary) workaround to convert the API response from string to int.
 	// The code only applies when string is being return, otherwise it's being skipped.
-	// As per docs at https://www.inwx.com/en/help/apidoc/f/ch02s08.html#domain.list we
-	// should get int here, but apparently it's not the case.
+	// As per docs at https://www.inwx.com/en/help/apidoc/f/ch02s08.html#domain.list we should get int here, but apparently it's not the case.
 	// Ticket 10026265 with INWX was raised.
-	if countStr, ok := (*resp)["count"].(string); ok {
-		// If we land here, we got string back but we expect int.
+	if countStr, ok := resp["count"].(string); ok {
+		// If we land here, we got string back, but we expect int.
 		// Converting value to int and writing it to the response.
 		if num, ok := strconv.Atoi(countStr); ok == nil {
-			(*resp)["count"] = num
+			resp["count"] = num
 		}
 	}
 
