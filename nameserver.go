@@ -184,8 +184,8 @@ func (s *NameserverService) FindRecordByID(recID int) (*NameserverRecord, *Names
 
 // NameserverCheckResponse API model.
 type NameserverCheckResponse struct {
-	Details []string
-	Status  string
+	Details []string `mapstructure:"details"`
+	Status  string   `mapstructure:"status"`
 }
 
 // NameserverRecordRequest API model.
@@ -269,7 +269,7 @@ type NameserverRecord struct {
 
 // NamserverListResponse API model.
 type NamserverListResponse struct {
-	Count   int
+	Count   int                `mapstructure:"count"`
 	Domains []NameserverDomain `mapstructure:"domains"`
 }
 

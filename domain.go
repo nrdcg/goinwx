@@ -332,7 +332,7 @@ type DomainListRequest struct {
 
 // DomainList API model.
 type DomainList struct {
-	Count   int
+	Count   int                  `mapstructure:"count"`
 	Domains []DomainInfoResponse `mapstructure:"domain"`
 }
 
