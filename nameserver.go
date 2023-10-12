@@ -64,7 +64,35 @@ func (s *NameserverService) Info(request *NameserverInfoRequest) (*NameserverInf
 }
 
 // List lists nameservers for a domain.
-func (s *NameserverService) List(request *NameserverListRequest) (*NameserverListResponse, error) {
+// Deprecated: use ListWithParams instead.
+func (s *NameserverService) List(domain string) (*NameserverListResponse, error) {
+	requestMap := map[string]interface{}{
+		"domain": "*",
+		"wide":   2,
+	}
+
+	if domain != "" {
+		requestMap["domain"] = domain
+	}
+
+	req := s.client.NewRequest(methodNameserverList, requestMap)
+
+	resp, err := s.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result := NameserverListResponse{}
+	err = mapstructure.Decode(resp, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+// ListWithParams lists nameservers for a domain.
+func (s *NameserverService) ListWithParams(request *NameserverListRequest) (*NameserverListResponse, error) {
 	if request == nil {
 		return nil, errors.New("request can't be nil")
 	}
@@ -159,7 +187,7 @@ func (s *NameserverService) DeleteRecord(recID int) error {
 
 // FindRecordByID search a DNS record by ID.
 func (s *NameserverService) FindRecordByID(recID int) (*NameserverRecord, *NameserverDomain, error) {
-	listResp, err := s.client.Nameservers.List(&NameserverListRequest{})
+	listResp, err := s.client.Nameservers.ListWithParams(&NameserverListRequest{})
 	if err != nil {
 		return nil, nil, err
 	}
@@ -232,6 +260,10 @@ type NameserverInfoRequest struct {
 	Priority int    `structs:"prio,omitempty"`
 }
 
+// NamserverInfoResponse API model.
+// Deprecated: Use NameserverInfoResponse instead.
+type NamserverInfoResponse = NameserverInfoResponse
+
 // NameserverInfoResponse API model.
 type NameserverInfoResponse struct {
 	RoID          int                `mapstructure:"roId"`
@@ -273,6 +305,10 @@ type NameserverListRequest struct {
 	Page      int    `structs:"page,omitempty"`
 	PageLimit int    `structs:"pagelimit,omitempty"`
 }
+
+// NamserverListResponse API model.
+// Deprecated: Use NameserverListResponse instead.
+type NamserverListResponse = NameserverListResponse
 
 // NameserverListResponse API model.
 type NameserverListResponse struct {
