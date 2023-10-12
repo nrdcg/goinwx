@@ -64,15 +64,13 @@ func (s *NameserverService) Info(request *NameserverInfoRequest) (*NameserverInf
 }
 
 // List lists nameservers for a domain.
-func (s *NameserverService) List(domain string) (*NameserverListResponse, error) {
-	requestMap := map[string]interface{}{
-		"domain": "*",
-		"wide":   2,
+func (s *NameserverService) List(request *NameserverListRequest) (*NameserverListResponse, error) {
+	if request == nil {
+		return nil, errors.New("request can't be nil")
 	}
 
-	if domain != "" {
-		requestMap["domain"] = domain
-	}
+	requestMap := structs.Map(request)
+	requestMap["wide"] = "2"
 
 	req := s.client.NewRequest(methodNameserverList, requestMap)
 
@@ -161,7 +159,7 @@ func (s *NameserverService) DeleteRecord(recID int) error {
 
 // FindRecordByID search a DNS record by ID.
 func (s *NameserverService) FindRecordByID(recID int) (*NameserverRecord, *NameserverDomain, error) {
-	listResp, err := s.client.Nameservers.List("")
+	listResp, err := s.client.Nameservers.List(&NameserverListRequest{})
 	if err != nil {
 		return nil, nil, err
 	}
@@ -266,6 +264,14 @@ type NameserverRecord struct {
 	URLRedirectDescription string `mapstructure:"urlRedirectDescription"`
 	URLRedirectKeywords    string `mapstructure:"urlRedirectKeywords"`
 	URLRedirectFavIcon     string `mapstructure:"urlRedirectFavIcon"`
+}
+
+// NameserverListRequest API model.
+type NameserverListRequest struct {
+	Domain    string `structs:"domain,omitempty"`
+	Wide      int    `structs:"wide,omitempty"`
+	Page      int    `structs:"page,omitempty"`
+	PageLimit int    `structs:"pagelimit,omitempty"`
 }
 
 // NameserverListResponse API model.
