@@ -291,6 +291,7 @@ type NameserverRecord struct {
 	Content                string `mapstructure:"content"`
 	TTL                    int    `mapstructure:"TTL"`
 	Priority               int    `mapstructure:"prio"`
+	URLAppend              bool   `mapstructure:"urlAppend,omitempty"`
 	URLRedirectType        string `mapstructure:"urlRedirectType"`
 	URLRedirectTitle       string `mapstructure:"urlRedirectTitle"`
 	URLRedirectDescription string `mapstructure:"urlRedirectDescription"`
