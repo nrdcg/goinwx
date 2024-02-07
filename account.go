@@ -1,6 +1,6 @@
 package goinwx
 
-import "github.com/mitchellh/mapstructure"
+import "github.com/go-viper/mapstructure/v2"
 
 const (
 	methodAccountLogin  = "account.login"

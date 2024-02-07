@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/fatih/structs"
-	"github.com/mitchellh/mapstructure"
+	"github.com/go-viper/mapstructure/v2"
 )
 
 const (
