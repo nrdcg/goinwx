@@ -1,5 +1,6 @@
 run:
   timeout: 5m
+  show-stats: true
   skip-files: [ ]
   skip-dirs: [ ]
 
@@ -83,7 +84,7 @@ linters:
 
 issues:
   exclude-use-default: false
-  max-per-linter: 0
+  max-issues-per-linter: 0
   max-same-issues: 0
   exclude:
     - "ST1000:"
