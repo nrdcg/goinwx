@@ -1,8 +1,27 @@
-run:
-  timeout: 5m
-  show-stats: true
-  skip-files: [ ]
-  skip-dirs: [ ]
+
+linters:
+  enable-all: true
+  disable:
+    - exportloopref # deprecated
+    - sqlclosecheck # not relevant (SQL)
+    - rowserrcheck # not relevant (SQL)
+    - cyclop # duplicate of gocyclo
+    - lll
+    - dupl
+    - wsl
+    - nlreturn
+    - mnd
+    - err113
+    - errname # Require a breaking change.
+    - wrapcheck
+    - exhaustive
+    - exhaustruct
+    - testpackage
+    - tparallel
+    - paralleltest
+    - prealloc
+    - forcetypeassert
+    - noctx
 
 linters-settings:
   govet:
@@ -11,8 +30,6 @@ linters-settings:
       - fieldalignment
   gocyclo:
     min-complexity: 15
-  maligned:
-    suggest-new: true
   goconst:
     min-len: 5
     min-occurrences: 3
@@ -48,40 +65,6 @@ linters-settings:
       hugeParam:
         sizeThreshold: 100
 
-linters:
-  enable-all: true
-  disable:
-    - deadcode # deprecated
-    - exhaustivestruct # deprecated
-    - golint # deprecated
-    - ifshort # deprecated
-    - interfacer # deprecated
-    - maligned # deprecated
-    - nosnakecase # deprecated
-    - scopelint # deprecated
-    - structcheck # deprecated
-    - varcheck # deprecated
-    - sqlclosecheck # not relevant (SQL)
-    - rowserrcheck # not relevant (SQL)
-    - execinquery # not relevant (SQL)
-    - cyclop # duplicate of gocyclo
-    - lll
-    - dupl
-    - wsl
-    - nlreturn
-    - gomnd
-    - goerr113
-    - wrapcheck
-    - exhaustive
-    - exhaustruct
-    - testpackage
-    - tparallel
-    - paralleltest
-    - prealloc
-    - ifshort
-    - forcetypeassert
-    - noctx
-
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0
@@ -98,3 +81,13 @@ issues:
         - bodyclose
     - path: response.go # errname
       text: 'the type name `ErrorResponse` should conform to the `XxxError` format'
+
+output:
+  show-stats: true
+  sort-results: true
+  sort-order:
+    - linter
+    - file
+
+run:
+  timeout: 5m

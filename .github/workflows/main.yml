@@ -3,9 +3,8 @@ name: Main
 on:
   push:
     branches:
+      - main
       - master
-    tags:
-      - v*
   pull_request:
 
 jobs:
@@ -15,20 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GO_VERSION: stable
-      GOLANGCI_LINT_VERSION: v1.56.0
+      GOLANGCI_LINT_VERSION: v1.62.2
       CGO_ENABLED: 0
 
     steps:
-
-      # https://github.com/marketplace/actions/checkout
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      # https://github.com/marketplace/actions/setup-go-environment
-      - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
 
