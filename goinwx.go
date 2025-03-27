@@ -92,6 +92,7 @@ func (c *Client) NewRequest(serviceMethod string, args map[string]interface{}) *
 // Do sends an API request and returns the API response.
 func (c *Client) Do(req *Request) (map[string]interface{}, error) {
 	var resp Response
+
 	err := c.RPCClient.Call(req.ServiceMethod, req.Args, &resp)
 	if err != nil {
 		return nil, err

@@ -45,6 +45,7 @@ func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
 	}
 
 	root := new(domainCheckResponseRoot)
+
 	err = mapstructure.Decode(resp, &root)
 	if err != nil {
 		return nil, err
@@ -66,6 +67,7 @@ func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) 
 	}
 
 	root := new(domainPriceResponseRoot)
+
 	err = mapstructure.Decode(resp, &root)
 	if err != nil {
 		return nil, err
@@ -84,6 +86,7 @@ func (s *DomainService) Register(request *DomainRegisterRequest) (*DomainRegiste
 	}
 
 	var result DomainRegisterResponse
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -100,6 +103,7 @@ func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
 	})
 
 	_, err := s.client.Do(req)
+
 	return err
 }
 
@@ -119,6 +123,7 @@ func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, erro
 	}
 
 	var result DomainInfoResponse
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -156,6 +161,7 @@ func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 	}
 
 	var result DomainList
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -176,6 +182,7 @@ func (s *DomainService) Whois(domain string) (string, error) {
 	}
 
 	var result map[string]string
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return "", err
@@ -194,6 +201,7 @@ func (s *DomainService) Update(request *DomainUpdateRequest) (float32, error) {
 	}
 
 	var result DomainUpdateResponse
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return 0, err

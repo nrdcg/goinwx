@@ -26,6 +26,7 @@ func (s *ContactService) Create(request *ContactCreateRequest) (int, error) {
 	}
 
 	result := make(map[string]int)
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return 0, err
@@ -41,6 +42,7 @@ func (s *ContactService) Delete(roID int) error {
 	})
 
 	_, err := s.client.Do(req)
+
 	return err
 }
 
@@ -49,6 +51,7 @@ func (s *ContactService) Update(request *ContactUpdateRequest) error {
 	req := s.client.NewRequest(methodContactUpdate, structs.Map(request))
 
 	_, err := s.client.Do(req)
+
 	return err
 }
 
@@ -69,6 +72,7 @@ func (s *ContactService) Info(contactID int) (*ContactInfoResponse, error) {
 	}
 
 	result := ContactInfoResponse{}
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -93,6 +97,7 @@ func (s *ContactService) List(search string) (*ContactListResponse, error) {
 	}
 
 	result := ContactListResponse{}
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err

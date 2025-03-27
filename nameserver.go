@@ -37,6 +37,7 @@ func (s *NameserverService) Check(domain string, nameservers []string) (*Nameser
 	}
 
 	var result NameserverCheckResponse
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -55,6 +56,7 @@ func (s *NameserverService) Info(request *NameserverInfoRequest) (*NameserverInf
 	}
 
 	result := NameserverInfoResponse{}
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -83,6 +85,7 @@ func (s *NameserverService) List(domain string) (*NameserverListResponse, error)
 	}
 
 	result := NameserverListResponse{}
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -108,6 +111,7 @@ func (s *NameserverService) ListWithParams(request *NameserverListRequest) (*Nam
 	}
 
 	result := NameserverListResponse{}
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return nil, err
@@ -126,6 +130,7 @@ func (s *NameserverService) Create(request *NameserverCreateRequest) (int, error
 	}
 
 	var result map[string]int
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return 0, err
@@ -144,6 +149,7 @@ func (s *NameserverService) CreateRecord(request *NameserverRecordRequest) (int,
 	}
 
 	var result map[string]int
+
 	err = mapstructure.Decode(resp, &result)
 	if err != nil {
 		return 0, err
