@@ -28,9 +28,10 @@ type Client struct {
 
 	// Services used for communicating with the API
 	Account     *AccountService
+	Contacts    *ContactService
+	Dnssec      *DNSSecService
 	Domains     *DomainService
 	Nameservers *NameserverService
-	Contacts    *ContactService
 }
 
 type service struct {
@@ -73,9 +74,10 @@ func NewClient(username, password string, opts *ClientOptions) *Client {
 
 	client.common.client = client
 	client.Account = (*AccountService)(&client.common)
+	client.Contacts = (*ContactService)(&client.common)
+	client.Dnssec = (*DNSSecService)(&client.common)
 	client.Domains = (*DomainService)(&client.common)
 	client.Nameservers = (*NameserverService)(&client.common)
-	client.Contacts = (*ContactService)(&client.common)
 
 	return client
 }
