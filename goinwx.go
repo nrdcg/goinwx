@@ -52,7 +52,7 @@ type ClientOptions struct {
 // Request The representation of an API request.
 type Request struct {
 	ServiceMethod string
-	Args          map[string]interface{}
+	Args          map[string]any
 }
 
 // NewClient returns a new INWX API client.
@@ -83,7 +83,7 @@ func NewClient(username, password string, opts *ClientOptions) *Client {
 }
 
 // NewRequest creates an API request.
-func (c *Client) NewRequest(serviceMethod string, args map[string]interface{}) *Request {
+func (c *Client) NewRequest(serviceMethod string, args map[string]any) *Request {
 	if args != nil {
 		args["lang"] = APILanguage
 	}
@@ -92,7 +92,7 @@ func (c *Client) NewRequest(serviceMethod string, args map[string]interface{}) *
 }
 
 // Do sends an API request and returns the API response.
-func (c *Client) Do(req *Request) (map[string]interface{}, error) {
+func (c *Client) Do(req *Request) (map[string]any, error) {
 	var resp Response
 
 	err := c.RPCClient.Call(req.ServiceMethod, req.Args, &resp)

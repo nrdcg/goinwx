@@ -34,7 +34,7 @@ type DomainService service
 
 // Check checks domains.
 func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
-	req := s.client.NewRequest(methodDomainCheck, map[string]interface{}{
+	req := s.client.NewRequest(methodDomainCheck, map[string]any{
 		"domain": domains,
 		"wide":   "2",
 	})
@@ -56,7 +56,7 @@ func (s *DomainService) Check(domains []string) ([]DomainCheckResponse, error) {
 
 // GetPrices gets TLDS prices.
 func (s *DomainService) GetPrices(tlds []string) ([]DomainPriceResponse, error) {
-	req := s.client.NewRequest(methodDomainGetPrices, map[string]interface{}{
+	req := s.client.NewRequest(methodDomainGetPrices, map[string]any{
 		"tld": tlds,
 		"vat": false,
 	})
@@ -97,7 +97,7 @@ func (s *DomainService) Register(request *DomainRegisterRequest) (*DomainRegiste
 
 // Delete deletes a domain.
 func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
-	req := s.client.NewRequest(methodDomainDelete, map[string]interface{}{
+	req := s.client.NewRequest(methodDomainDelete, map[string]any{
 		"domain": domain,
 		"scDate": scheduledDate.Format(time.RFC3339),
 	})
@@ -109,7 +109,7 @@ func (s *DomainService) Delete(domain string, scheduledDate time.Time) error {
 
 // Info gets information about a domain.
 func (s *DomainService) Info(domain string, roID int) (*DomainInfoResponse, error) {
-	req := s.client.NewRequest(methodDomainInfo, map[string]interface{}{
+	req := s.client.NewRequest(methodDomainInfo, map[string]any{
 		"domain": domain,
 		"wide":   "2",
 	})
@@ -172,7 +172,7 @@ func (s *DomainService) List(request *DomainListRequest) (*DomainList, error) {
 
 // Whois information about a domains.
 func (s *DomainService) Whois(domain string) (string, error) {
-	req := s.client.NewRequest(methodDomainWhois, map[string]interface{}{
+	req := s.client.NewRequest(methodDomainWhois, map[string]any{
 		"domain": domain,
 	})
 

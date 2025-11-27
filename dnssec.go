@@ -48,7 +48,7 @@ func (s *DNSSecService) Add(request *DNSSecAddRequest) (*DNSSecAddResponse, erro
 
 // DeleteAll deletes all DNSKEY/DS entries for a domain.
 func (s *DNSSecService) DeleteAll(domain string) error {
-	req := s.client.NewRequest(methodDNSSecDeleteAll, map[string]interface{}{
+	req := s.client.NewRequest(methodDNSSecDeleteAll, map[string]any{
 		"domainName": domain,
 	})
 
@@ -62,7 +62,7 @@ func (s *DNSSecService) DeleteAll(domain string) error {
 
 // DeleteDNSKey deletes one DNSKEY from a specified domain.
 func (s *DNSSecService) DeleteDNSKey(key string) error {
-	req := s.client.NewRequest(methodDNSSecDeleteDNSKey, map[string]interface{}{
+	req := s.client.NewRequest(methodDNSSecDeleteDNSKey, map[string]any{
 		"key": key,
 	})
 
@@ -76,7 +76,7 @@ func (s *DNSSecService) DeleteDNSKey(key string) error {
 
 // Disable disables automated DNSSEC management for a domain.
 func (s *DNSSecService) Disable(domain string) error {
-	req := s.client.NewRequest(methodDNSSecDisableDNSSec, map[string]interface{}{
+	req := s.client.NewRequest(methodDNSSecDisableDNSSec, map[string]any{
 		"domainName": domain,
 	})
 
@@ -90,7 +90,7 @@ func (s *DNSSecService) Disable(domain string) error {
 
 // Enable enables automated DNSSEC management for a domain.
 func (s *DNSSecService) Enable(domain string) error {
-	req := s.client.NewRequest(methodDNSSecEnableDNSSec, map[string]interface{}{
+	req := s.client.NewRequest(methodDNSSecEnableDNSSec, map[string]any{
 		"domainName": domain,
 	})
 
@@ -104,7 +104,7 @@ func (s *DNSSecService) Enable(domain string) error {
 
 // Info gets current DNSSEC information.
 func (s *DNSSecService) Info(domains []string) (*DNSSecInfoResponse, error) {
-	req := s.client.NewRequest(methodDNSSecInfo, map[string]interface{}{
+	req := s.client.NewRequest(methodDNSSecInfo, map[string]any{
 		"domains": domains,
 	})
 

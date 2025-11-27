@@ -14,7 +14,7 @@ type AccountService service
 
 // Login Account login.
 func (s *AccountService) Login() (*LoginResponse, error) {
-	req := s.client.NewRequest(methodAccountLogin, map[string]interface{}{
+	req := s.client.NewRequest(methodAccountLogin, map[string]any{
 		"user": s.client.username,
 		"pass": s.client.password,
 	})
@@ -54,7 +54,7 @@ func (s *AccountService) Lock() error {
 
 // Unlock Account unlock.
 func (s *AccountService) Unlock(tan string) error {
-	req := s.client.NewRequest(methodAccountUnlock, map[string]interface{}{
+	req := s.client.NewRequest(methodAccountUnlock, map[string]any{
 		"tan": tan,
 	})
 

@@ -37,7 +37,7 @@ func (s *ContactService) Create(request *ContactCreateRequest) (int, error) {
 
 // Delete Deletes a contact.
 func (s *ContactService) Delete(roID int) error {
-	req := s.client.NewRequest(methodContactDelete, map[string]interface{}{
+	req := s.client.NewRequest(methodContactDelete, map[string]any{
 		"id": roID,
 	})
 
@@ -57,7 +57,7 @@ func (s *ContactService) Update(request *ContactUpdateRequest) error {
 
 // Info Get information about a contact.
 func (s *ContactService) Info(contactID int) (*ContactInfoResponse, error) {
-	requestMap := make(map[string]interface{})
+	requestMap := make(map[string]any)
 	requestMap["wide"] = 1
 
 	if contactID != 0 {
@@ -83,7 +83,7 @@ func (s *ContactService) Info(contactID int) (*ContactInfoResponse, error) {
 
 // List Search contacts.
 func (s *ContactService) List(search string) (*ContactListResponse, error) {
-	requestMap := make(map[string]interface{})
+	requestMap := make(map[string]any)
 
 	if search != "" {
 		requestMap["search"] = search

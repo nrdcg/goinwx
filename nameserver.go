@@ -26,7 +26,7 @@ type NameserverService service
 
 // Check checks a domain on nameservers.
 func (s *NameserverService) Check(domain string, nameservers []string) (*NameserverCheckResponse, error) {
-	req := s.client.NewRequest(methodNameserverCheck, map[string]interface{}{
+	req := s.client.NewRequest(methodNameserverCheck, map[string]any{
 		"domain": domain,
 		"ns":     nameservers,
 	})
@@ -66,9 +66,10 @@ func (s *NameserverService) Info(request *NameserverInfoRequest) (*NameserverInf
 }
 
 // List lists nameservers for a domain.
+//
 // Deprecated: use ListWithParams instead.
 func (s *NameserverService) List(domain string) (*NameserverListResponse, error) {
-	requestMap := map[string]interface{}{
+	requestMap := map[string]any{
 		"domain": "*",
 		"wide":   2,
 	}
@@ -179,7 +180,7 @@ func (s *NameserverService) UpdateRecord(recID int, request *NameserverRecordReq
 
 // DeleteRecord deletes a DNS record.
 func (s *NameserverService) DeleteRecord(recID int) error {
-	req := s.client.NewRequest(methodNameserverDeleteRecord, map[string]interface{}{
+	req := s.client.NewRequest(methodNameserverDeleteRecord, map[string]any{
 		"id": recID,
 	})
 
@@ -267,6 +268,7 @@ type NameserverInfoRequest struct {
 }
 
 // NamserverInfoResponse API model.
+//
 // Deprecated: Use NameserverInfoResponse instead.
 type NamserverInfoResponse = NameserverInfoResponse
 
@@ -314,6 +316,7 @@ type NameserverListRequest struct {
 }
 
 // NamserverListResponse API model.
+//
 // Deprecated: Use NameserverListResponse instead.
 type NamserverListResponse = NameserverListResponse
 
