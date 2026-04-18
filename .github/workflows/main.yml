@@ -10,6 +10,8 @@ on:
       - main
       - master
 
+permissions: {}
+
 jobs:
 
   main:
@@ -17,26 +19,28 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GO_VERSION: stable
-      GOLANGCI_LINT_VERSION: v2.6
+      GOLANGCI_LINT_VERSION: v2.11
       CGO_ENABLED: 0
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Check and get dependencies
         run: |
-          go mod tidy
-          git diff --exit-code go.mod
-          git diff --exit-code go.sum
+          go mod tidy --diff
           go mod download
 
-      - uses: golangci/golangci-lint-action@v9
+      - name: Install golangci-lint ${{ env.GOLANGCI_LINT_VERSION }}
+        uses: golangci/golangci-lint-action@v9.0.0
         with:
-          install-only: true
           version: ${{ env.GOLANGCI_LINT_VERSION }}
+          install-only: true
 
       - name: Make
         run: make
